@@ -14,7 +14,7 @@ export class BaseApi {
     this.servers.interceptors.request.use(function (config) {
       return config
     }, function (error) {
-      console.log(1)
+
       return Promise.reject(error || '网络繁忙，请稍候再试！');
     });
     this.servers.interceptors.response.use(function (response) {
@@ -30,11 +30,9 @@ export class BaseApi {
             msg = error.response.data.message;
             break;
           default:
-            console.log(2)
             msg = '网络繁忙，请稍候再试！'
         }
       } else {
-        console.log(3)
         msg = '网络繁忙，请稍候再试！'
       }
       return Promise.reject(error.response || '网络繁忙，请稍候再试！');
@@ -47,15 +45,36 @@ export class BaseApi {
    * @param body
    * @returns {Promise<any>}
    */
-  connection(method = 'GET', url, body) {
+  connection(method = 'GET', url, body, fileList, fileKey = 'files') {
     if (typeof body !== 'object') body = {};
     method = method.toLocaleLowerCase();
+    if (fileList && (fileList instanceof Array)) {
+      let headers = {'Content-Type': 'multipart/form-data'};
+      const param = new window.FormData();
+      for (const key in body) {
+        if ({}.hasOwnProperty.call(body, key))
+          param.append(key, body[key]);
+      }
+
+      fileList.forEach(file => param.append(fileKey, file));
+      console.log(param.get(fileKey))
+      return Promise.resolve(this.servers[method](url, param,{headers}))
+    }
     if (method === 'get') {
       url = url + (url.indexOf('?') > 0 ? '&' : '?' + qs.stringify(body));
       body = {}
     }
     return Promise.resolve(this.servers[method](url, body))
   }
+  // connection(method = 'GET', url, body) {
+  //   if (typeof body !== 'object') body = {};
+  //   method = method.toLocaleLowerCase();
+  //   if (method === 'get') {
+  //     url = url + (url.indexOf('?') > 0 ? '&' : '?' + qs.stringify(body));
+  //     body = {}
+  //   }
+  //   return Promise.resolve(this.servers[method](url, body))
+  // }
 }
 
 export const servers = new BaseApi('http://127.0.0.1:8080')

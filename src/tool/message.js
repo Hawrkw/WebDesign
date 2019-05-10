@@ -1,4 +1,4 @@
-import {Notification} from 'element-ui'
+import {Message} from 'element-ui'
 
 /**
  * 全局提示
@@ -7,40 +7,19 @@ import {Notification} from 'element-ui'
  */
 
 export class Msg {
-  static success(message, title) {
-    Notification.closeAll();
-    Notification({
-      message,
-      title: title || '提示',
-      type: 'success'
-    })
+  static success(msg) {
+    Message.success(msg)
   }
 
-  static error(message, title) {
-    Notification.closeAll();
-    Notification({
-      message,
-      title: title || '提示',
-      type: 'error'
-
-    })
+  static error(msg) {
+    Message.error(msg)
   }
 
-  static warn(message, title) {
-    Notification.closeAll();
-    Notification({
-      message,
-      title: title || '提示',
-      type: 'warning'
-    })
+  static warn(msg) {
+    Message.warning(msg)
   }
 
-  static info(message, title) {
-    Notification.closeAll();
-    Notification({
-      message,
-      title: title || '提示',
-      type: 'info'
-    })
+  static info(msg) {
+    Message.info(msg)
   }
 }
