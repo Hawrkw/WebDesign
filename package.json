@@ -15,7 +15,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "element-ui": "^2.8.2",
     "file-saver": "^2.0.1",
     "mint-ui": "^2.2.13",
